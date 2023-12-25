@@ -1,0 +1,90 @@
+/*--------------------HOME & SHUTDOWN--------------------*/
+
+div.home, div.shutdown{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: absolute;
+    
+    width: 10.525%;
+    height: 7%;
+
+    background-color: var(--sub_bg);
+    border: 1px solid var(--border_color);
+
+    color: var(--text_color);
+    text-align: center;
+    
+}
+
+div.home{
+    top: 3%;
+    left: 15%;
+}
+
+div.shutdown{
+    top: 3%;
+    left: 2%;
+}
+
+/*--------------------ANALYZING VIDEO SECTION--------------------*/
+div.av_section_title, div.acf_section_title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: absolute;
+    left: 2%;
+
+    /* background-color: var(--sub_bg); */
+
+    color: var(--text_color);
+    font-size: 180%;
+    text-align: center;
+}
+
+div.av_section_title{
+    top: 15%;
+}
+
+div.av_section_content, div.acf_section_content{
+    display: block;
+    justify-content: center;
+    /* flex-direction: column; */
+    
+    position: absolute;
+
+    width: 96%;
+    height: 45%;
+    left: 2%;
+
+    border: 1px solid var(--border_color);
+
+    overflow-y: scroll;
+
+}
+
+div.av_section_content{
+    top: 21%;
+}
+
+div.av_content{
+    color: var(--text_color);
+    padding: 1%;
+    padding-bottom: 0;
+}
+
+img.directory_tree{
+    padding: 1%;
+    padding-bottom: 0;
+}
+
+/*--------------------CUSTOM FEATURE SECTION--------------------*/
+div.acf_section_title{
+    top: 70%;
+}
+
+div.acf_section_content{
+    top: 75%;
+}

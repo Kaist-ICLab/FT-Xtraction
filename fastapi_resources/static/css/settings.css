@@ -1,0 +1,109 @@
+/*--------------------VARIABLES--------------------*/
+/* :root{
+    --main_bg: #070719;
+    --sub_bg: #0B0B26;
+    --sub_bg_2: #121240;
+    --hover_sub_bg: #141443;
+    --title_color: #62FCC9;
+    --sub_title_color: #5CEDBD;
+    --border_color: #62FCC9;
+    --text_color: #62FCC9;
+    --icon_color: #00e3c8;
+} */
+
+:root{
+    --main_bg: #def8ef;
+    --sub_bg: #C8FCEA;
+    --sub_bg_2: #C8FCEA;
+    --hover_sub_bg: #8ef2cf;
+    --title_color: #00754B;
+    --sub_title_color: #0a8a5c;
+    --border_color: #00754B;
+    --text_color: #00754B;
+    --icon_color: #38d29e;
+}
+
+/*--------------------GENERAL SETUP--------------------*/
+* {
+    font-family: 'Lato', sans-serif;
+    word-spacing: 0.15vw;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+
+    margin: 0;
+    
+    width: 100%;
+    height: 100%;
+    
+    background-color: var(--main_bg);
+}
+
+/*----------SHUTDOWN----------*/
+div.shutdown:hover, div.shutdown:focus{
+    cursor: pointer;
+
+    background-color: var(--hover_sub_bg);
+}
+
+div.shutdown_overlay{
+    z-index: 2;
+
+    display: none;
+
+    position: absolute;
+
+    top: 0%;
+    left: 0%;
+
+    width: 100%;
+    height: 100%;
+}
+
+div.shutdown_overlay_background{
+    position: absolute;
+
+    top: 0%;
+    left: 0%;
+
+    width: 100%;
+    height: 100%;
+    
+    background-color: var(--main_bg);
+    opacity: 0.7;
+}
+
+div.shutdown_overlay_message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 25%;
+    left: 25%;
+
+    width: 50%;
+    height: 50%;
+    
+    background-color: var(--sub_bg);
+    border: 1px solid var(--border_color);
+
+    color: var(--text_color);
+    font-size: 2.3vw;
+    text-align: center;
+    white-space: pre-line;
+    line-height: 130%;
+}
+
+/*----------HOME----------*/
+div.home:hover, div.home:focus{
+    cursor: pointer;
+    background: var(--hover_sub_bg);
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Video</title>
+        <!-- <link href="./static/css/settings.css" rel="stylesheet">
+        <link href="./static/css/video.css" rel="stylesheet"> -->
+        <link href="../static/css/settings.css" rel="stylesheet">
+        <link href="../static/css/video_analysis.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <a href="/"><div class="home">Home Page</div></a>
+        <div class="shutdown">Shut Down</div>
+
+        <div class="container video_container">
+            <img src="/video_analysis/data" height="100%" class="video"/>
+            <div class="pause_overlay">
+                <svg class="play_button" viewBox="0 0 231.73 256.54">
+                    <path d="M123.95466,88.25764c17.82716-28.11134,38.33244-25.7422,56.82825,2.6229L272.8351,253.69856v0c12.40514,26.95862,4.4974,44.35025-26.59919,46.14181l-.13922.24151-188.03529-.24151c-.59092-.02716.57805.1819,0,.14565-35.56712-.43372-44.64908-19.57728-28.91504-50.59995h-.00001" transform="matrix(0 1-1 0 300.109171-21.834394)" />
+                </svg>
+            </div>
+            <div class="replay_overlay">
+                <svg class="replay_button" viewBox="0 0 260 304.563">
+                    <path d="M 133.07031,2.4264062e-4 38.785161,59.301024 133.07031,118.6018 V 64.646727 A 110,110 0 0 1 240,174.56274 110,110 0 0 1 130,284.56275 110,110 0 0 1 20.000001,174.56274 H 1.45e-6 A 130,130 0 0 0 130,304.56275 130,130 0 0 0 260,174.56274 130,130 0 0 0 133.07031,44.638915 Z" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="container progress_bar_container">
+            <div class="video_progress_bar"></div>
+        </div>
+
+        <div class="timer">00:00:00</div>
+        <div class="frame_counter">0</div>
+
+        <div class="container video_selection_container">
+            <div class="container_title">Video Selection</div>
+            <form class="video_selection_form"></form>
+        </div>
+
+        <div class="container analysis_type_selection_container">
+            <div class="container_title">Analysis Selection</div>
+            <div class="isolated_analysis_type_selection">
+                <div class="analysis_type_selection_radio_container">
+                    <input type="radio" id="select_overlays" class="analysis_type_selection_radio" name="analysis_radio" checked>
+                    <label for="select_overlays" class="analysis_type_selection_label">Video 
+                        Overlays</label>
+                </div>
+                <div class="analysis_type_selection_radio_container">
+                    <input type="radio" id="select_significant_moments" class="analysis_type_selection_radio" name="analysis_radio">
+                    <label for="select_significant_moments" class="analysis_type_selection_label">Significant
+                        Moments</label>
+                </div>
+                <div class="analysis_type_selection_radio_container">
+                    <input type="radio" id="select_features" class="analysis_type_selection_radio" name="analysis_radio">
+                    <label for="select_features" class="analysis_type_selection_label">Feature
+                        Graphs</label>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="container analysis_selection_container">
+            <form class="analysis_selection_form"></form>
+            <form class="analysis_selection_form"></form>
+            <form class="analysis_selection_form"></form>
+        </div>
+
+        <div class="container feature_chart_container">
+            <div class="feature_chart_legend_container"></div>
+            <canvas class="feature_chart"></canvas>
+        </div>
+
+        <div class="shutdown_overlay">
+            <div class="shutdown_overlay_background"></div>
+            <div class="shutdown_overlay_message">The server has been shutdown, 
+                you may now close this window.
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script type="text/javascript" src="../static/js/utils.js"></script>
+    <script>
+        const total_frame_count = {{total_frame_count|safe}}
+        const chart_frame_width= {{chart_frame_width|safe}}
+        const frames = {{frames|safe}}
+
+        const feature_names = {{feature_names|safe}}
+        const sub_feature_names = {{sub_feature_names|safe}}
+        const feature_data = {{feature_data|safe}}
+        const graph_colors = {{graph_colors|safe}}
+
+        const video_names = {{video_names|safe}}
+        const overlay_names = {{overlay_names|safe}}
+        let overlay_flags = overlay_names.map(() => false)
+        const significant_moment_names = {{significant_moment_names|safe}}
+        const significant_moment_data = {{significant_moment_data|safe}}
+        const significant_moment_colors = {{significant_moment_colors|safe}}
+        const feature_offsets = {{feature_offsets|safe}}
+        const fps = {{fps|safe}}
+        const current_video_ind = {{current_video_ind|safe}}
+    </script>
+    <script type="text/javascript" src="../static/js/video_analysis.js"></script>
+</html>

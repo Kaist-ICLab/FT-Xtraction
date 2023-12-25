@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Feature Extraction</title>
+        <!-- <link href="./static/css/settings.css" rel="stylesheet">
+        <link href="./static/css/video.css" rel="stylesheet"> -->
+        <link href="../static/css/settings.css" rel="stylesheet">
+        <link href="../static/css/feature_extraction.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <a href="/"><div class="home">Home Page</div></a>
+        <div class="shutdown">Shut Down</div>
+
+        <div class="container video_csv_list_container">
+            <div class="select_all">Select All</div>
+            <table class="video_csv_list">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Video Name</th>
+                        <th>CSV Exists</th>
+                        <th>Number of Features</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="container feature_list_container">
+            <div class="form_title">Available Features</div>
+            <form class="feature_list_form"></form>
+        </div>
+
+        <div class="container significant_moments_list_container">
+            <div class="form_title">Available Significant Moments</div>
+            <form class="significant_moments_list_form"></form>
+        </div>
+
+        <div class="create_csvs">Create CSVs for selected videos</div>
+
+        <div class="csv_progress_overlay">
+            <div class="csv_progress_overlay_background"></div>
+            <div class="container csv_progress_container">
+                <table class="csv_progress_table">
+                    <thead>
+                        <tr>
+                            <th style="width:40%">Video Name</th>
+                            <th colspan="2">Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="finished_processing_message">Your videos have been processed.
+                    You can analyze them at the "Video Analysis" page</div>
+            </div>
+            <div class="stop_processing">Stop Processing</div>
+            <div class="close_progress_overlay">Close</div>
+        </div>
+
+        <div class="shutdown_overlay">
+            <div class="shutdown_overlay_background"></div>
+            <div class="shutdown_overlay_message">The server has been shutdown, 
+                you may now close this window.
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script type="text/javascript" src="../static/js/utils.js"></script>
+    <script>
+        const video_names = {{video_list|safe}}
+        let csv_found= {{csv_exists_list|safe}}
+
+        let num_features = {{number_features|safe}}
+        let selected_videos = video_names.map(() => false)
+        const features = {{feature_list|safe}}
+        let selected_features = features.map(() => false)
+        const signficant_moments = {{signficant_moments_list|safe}}
+        let selected_significant_moments = signficant_moments.map(() => false)
+    </script>
+    <script type="text/javascript" src="../static/js/feature_extraction.js"></script>
+</html>

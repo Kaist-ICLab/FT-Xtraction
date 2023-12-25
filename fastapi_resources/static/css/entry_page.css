@@ -1,0 +1,93 @@
+/*--------------------INTRODUCTION--------------------*/
+div.title{
+    position: absolute;
+    top: 8%;
+
+    color: var(--title_color);
+    font-size: 2.3vw;
+}
+
+div.sub_title{
+    position: absolute;
+    top: 16%;
+
+    color: var(--sub_title_color);
+    font-size: 1.7vw;
+}
+
+/*--------------------SHUTDOWN--------------------*/
+div.shutdown{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+
+    top: 2vh;
+    left: 2vh;
+
+    width: 8%;
+    height: 6%;
+
+    background-color: var(--sub_bg);
+    border: 1px solid var(--border_color);
+    border-radius: 500px;
+
+    color: var(--text_color);
+    font-size: 1.2vw;
+}
+
+/*--------------------LINKS--------------------*/
+
+div.link{
+    --top_link: 28%;
+    --middle_horizontal: 43%;
+    --link_separation: 12%;
+    --horizontal_placement: 30%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    width: 14%;
+    height: 8%;
+    
+    background-color: var(--sub_bg);
+    border: 1px solid var(--border_color);
+    border-radius: 500px;
+
+    color: var(--text_color);
+    font-size: 1.4vw;
+}
+
+div.link:hover, div.link:focus{
+    cursor: pointer;
+    
+    background: var(--hover_sub_bg);
+}
+
+div.link.video_analysis{
+    top: calc( var(--top_link) + var(--link_separation) );
+    left: var(--middle_horizontal)
+}
+
+div.link.feature_extraction{
+    top: calc( var(--top_link) + var(--link_separation) * 4 );
+    left: var(--middle_horizontal)
+}
+
+div.link.documentation, div.link.user_guide{
+    bottom: 11vh;
+    right: 3vh;
+
+    width: 10%;
+    height: 6%;
+
+    font-size: 1.2vw;
+}
+
+div.link.user_guide{
+    bottom: 3vh;
+    right: 3vh;
+}

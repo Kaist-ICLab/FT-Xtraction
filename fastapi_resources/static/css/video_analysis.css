@@ -1,0 +1,478 @@
+/*--------------------SETUP--------------------*/
+body{
+    --selection_width: 22%;
+    --visualization_width: 72%;
+
+    --selection_left: 2%;
+    --visualization_right: 2%;
+
+    --progress_bottom: 37%;
+}
+
+div.container{
+    position: absolute;
+
+    background-color: var(--sub_bg);
+    border: 1px solid var(--border_color);
+}
+
+div.container_title{
+    margin-top:2%;
+    display: flex;
+    height: 20%;
+    width: 100%;
+    color: var(--text_color);
+    font-size: 125%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 300;
+}
+
+/*--------------------HOME PAGE--------------------*/
+div.home, div.shutdown{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: absolute;
+    
+    width: 10.525%;
+    height: 7%;
+
+    background-color: var(--sub_bg);
+    border: 1px solid var(--border_color);
+
+    color: var(--text_color)
+}
+
+div.home{
+    top: 3%;
+    left: var(--selection_left);
+}
+
+/*--------------------SHUTDOWN--------------------*/
+div.shutdown{
+    left: 13.45%;
+    top: 3%;
+}
+
+/*--------------------VIDEO--------------------*/
+div.container.video_container{
+    display: flex;
+    justify-content: center;
+
+    top: 3%;
+    right: var(--visualization_right);
+
+    width: var(--visualization_width);
+    height: 53%;
+
+    background-color: #000000;
+}
+
+/*--------------------PAUSE--------------------*/
+div.pause_overlay, div.replay_overlay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    cursor: pointer;
+
+    background-color: rgba(0,0,0,0.5);
+}
+
+svg.play_button{
+    height: 20%;
+}
+
+svg.play_button path{
+    fill: var(--icon_color);
+}
+
+/*--------------------REPLAY--------------------*/
+div.replay_overlay{
+    display: none;
+}
+
+svg.replay_button{
+    height: 20%;
+}
+
+svg.replay_button path{
+    fill: var(--icon_color);
+}
+
+/*--------------------PROGRESS BAR--------------------*/
+div.container.progress_bar_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    bottom: var(--progress_bottom);
+    right: var(--visualization_right);
+
+    width: 58%;
+    height: 5%;
+
+    background-color: var(--sub_bg_2);
+    border-radius: 5000px;
+}
+
+div.video_progress_bar {
+    --video_progress: 0%;
+
+    display: flex;
+
+    position: absolute;
+    height: calc(100% - 2vh);
+    width: calc(100% - 2vh);
+
+    overflow: hidden;
+
+    background-color: #000000;
+    border-radius: 5000px;
+}
+
+div.video_progress_bar::before {
+    position: absolute;
+    right: calc(100% - var(--video_progress));
+
+    width: 100%;
+    height: 100%;
+
+    background-color: var(--border_color);
+    border-radius: 5000px;
+
+    content: "";
+}
+
+/*--------------------SIGNIFICANT MOMENTS--------------------*/
+div.significant_moment_container{
+    display: none;
+
+    position: absolute;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    border-radius: 5000px;
+}
+
+div.significant_moment{
+    z-index: 1;
+
+    position: absolute;
+
+    height: 100%;
+    width: 0.4%;
+}
+
+/*--------------------TIMER & FRAME COUNTER--------------------*/
+div.timer, div.frame_counter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    bottom: var(--progress_bottom);
+
+    width: 6%;
+    height: 5%;
+
+    background-color: var(--sub_bg);
+    border: 1px solid var(--border_color);
+    
+    color:var(--text_color);
+}
+
+div.timer{
+    right: 68%;
+}
+
+div.frame_counter{
+    right: 61%;
+}
+
+/*--------------------VIDEO SELECTION--------------------*/
+div.container.video_selection_container{
+    top: 11.5%;
+    left: var(--selection_left);
+   
+    width: var(--selection_width);
+    height: 27.5%;
+}
+
+form.video_selection_form{
+    height: 100%;
+    width: 100%;
+}
+
+div.video_selection_input_container{
+    display: flex;
+    align-items: center;
+
+    height: 20%;
+    width: 100%;
+}
+
+input[type="radio"].video_selection_input{
+    margin-left: 1%;
+    
+    position: absolute;
+    height: 2.5vh;
+    width: 2.5vh;
+
+    appearance: none;
+    cursor: pointer;
+
+    background-color: transparent;
+    border: 1px solid var(--text_color);
+    border-radius: 50%;
+}
+
+input[type="radio"].video_selection_input:checked{
+    background-color: var(--text_color);
+    box-shadow: inset 0px 0px 0px 3px var(--sub_bg);
+}
+
+label.video_selection_label{
+    margin-left: 10%;
+
+    position: absolute;
+
+    cursor: pointer;
+
+    color: var(--text_color);
+    font-size: 95%;
+    text-align: center;
+    white-space:pre-line;
+
+    user-select: none;
+}
+
+/*--------------------ANALYSIS TYPE SELECTION--------------------*/
+div.container.analysis_type_selection_container{
+    display: flex;
+    flex-direction: column;
+
+    top: 40.5%;
+    left: var(--selection_left);
+    
+    width: var(--selection_width);
+    height: 15.5%;
+}
+
+div.isolated_analysis_type_selection{
+    margin-top: 10%;
+    display:inline-flex
+}
+
+div.analysis_type_selection_radio_container{
+    display:flex;
+    align-items: center;
+
+    height: 100%;
+    width: 33%;
+}
+
+input[type="radio"].analysis_type_selection_radio{
+    margin: 1%;
+    
+    position: absolute;
+    height: 2.5vh;
+    width: 2.5vh;
+
+    appearance: none;
+    cursor: pointer;
+
+    background-color: transparent;
+    border: 1px solid var(--text_color);
+    border-radius: 50%;
+}
+
+input[type="radio"].analysis_type_selection_radio:checked{
+    background-color: var(--text_color);
+    box-shadow: inset 0px 0px 0px 3px var(--sub_bg);
+}
+
+label.analysis_type_selection_label{
+    margin-left: 9%;
+
+    position: absolute;
+
+    cursor: pointer;
+
+    color: var(--text_color);
+    font-size: 95%;
+    text-align: center;
+    white-space:pre-line;
+
+    user-select: none;
+}
+
+/*--------------------ANALYSIS SELECTION--------------------*/
+div.container.analysis_selection_container{
+    left: var(--selection_left);
+    bottom: 3%;
+
+    width: var(--selection_width);
+    height: 39%;
+}
+
+form.analysis_selection_form{
+    display: none;
+
+    width: 100%;
+    height: 100%;
+}
+
+div.analysis_selection_input_container{
+    display:flex;
+    align-items: center;
+
+    height: 20%;
+    width: 100%;
+}
+
+input.analysis_selection_input{
+    margin: 1%;
+    
+    position: absolute;
+    height: 2.5vh;
+    width: 2.5vh;
+
+    appearance: none;
+    cursor: pointer;
+
+    background-color: transparent;
+    border: 1px solid var(--text_color);
+    border-radius: 50%;
+}
+
+input[type="checkbox"].analysis_selection_input{
+    border-radius: 25%;
+}
+
+input.analysis_selection_input:checked{
+    background-color: var(--text_color);
+    box-shadow: inset 0px 0px 0px 3px var(--sub_bg);
+}
+
+label.analysis_selection_label{
+    margin-left: 10%;
+
+    position: absolute;
+
+    cursor: pointer;
+
+    color: var(--text_color);
+    font-size: 95%;
+    text-align: center;
+    white-space:pre-line;
+
+    user-select: none;
+}
+
+/*--------------------CHART--------------------*/
+div.container.feature_chart_container{
+    display: flex;
+    align-items: center;
+
+    bottom: 3%;
+    right: var(--visualization_right);
+
+    width: var(--visualization_width);
+    height: 32%;
+}
+
+
+canvas.feature_chart{
+    position: absolute;
+    right: 1.2%;
+
+    width: 78.2% !important;
+    height: 90% !important;
+
+    background-color:transparent;
+    border: 1px solid green;
+}
+
+div.feature_chart_legend_container{
+    position: absolute;
+    left: 1.2%;
+
+    width: 18%;
+    height: 90%;
+
+    overflow-y: scroll;
+    
+    border-right: 1px solid var(--border_color);
+}
+
+
+form.feature_chart_legend_form{
+    width: 100%;
+    height: 100%;
+}
+
+div.feature_chart_legend_input_container{
+    --checkbox_border_color: var(--text_color);
+    --checkbox_color: var(--text_color);
+    display:flex;
+    align-items: center;
+
+    width: 100%;
+    height: 15%;
+}
+
+input.feature_chart_legend_input{
+    margin-left: 1%;
+    
+    position: absolute;
+    height: 2.5vh;
+    width: 2.5vh;
+
+    appearance: none;
+    cursor: pointer;
+
+    background-color: transparent;
+    border: 1px solid var(--checkbox_border_color);
+    border-radius: 25%;
+}
+
+div.feature_chart_legend_input_container.fade>input.feature_chart_legend_option_checkbox{
+    background-color: transparent;
+}
+
+div.feature_chart_legend_input_container.fade{
+    opacity: 0.7;
+}
+
+input.feature_chart_legend_input:checked{
+    background-color: var(--checkbox_color);
+    box-shadow: inset 0px 0px 0px 2px var(--sub_bg);
+}
+
+label.feature_chart_legend_label{
+    margin-left: 15%;
+
+    position: absolute;
+
+    cursor: pointer;
+
+    color: var(--text_color);
+    font-size: 95%;
+    text-align: center;
+    white-space:pre-line;
+
+    user-select: none;
+}

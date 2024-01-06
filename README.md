@@ -6,7 +6,7 @@ FT-Xtraction is a locally hosted video processing and analysis website built on 
 Before being able to run the website, you must install a couple machine learning models. You don’t have to find and download the models by yourself, simply run:
 
 ```console
-$ python setup.py
+$ python model_setup.py
 ```
 
 Then you can simply run the following to access the website:
@@ -14,7 +14,7 @@ Then you can simply run the following to access the website:
 ```console
 $ python main.py
 ```
-Before you can process and analyze your videos, you must upload them to the correct directory with the requisite supplementary files; the instructions to do so are given in the “User Guide” page of the website.
+Before you can process and analyze your videos, you must upload them to the correct directory with the requisite supplementary files; the instructions to do so are given in the “User Guide” page of the website as well as the documentation.
 
 ## Main Pages
 FT-Xtraction has three main pages.

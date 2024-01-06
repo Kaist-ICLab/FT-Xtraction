@@ -3,7 +3,13 @@ FT-Xtraction is a locally hosted video processing and analysis website built on 
 
 ## Setup
 
-Before being able to run the website, you must install a couple machine learning models. You don’t have to find and download the models by yourself, simply run:
+First, to install all the dependencies, run:
+
+```console
+$ pip install -r requirements.txt
+```
+
+Next, before being able to run the website, you must install a couple machine learning models. You don’t have to find and download the models by yourself, simply run:
 
 ```console
 $ python model_setup.py

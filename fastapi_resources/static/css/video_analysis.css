@@ -146,7 +146,7 @@ div.video_progress_bar::before {
     width: 100%;
     height: 100%;
 
-    background-color: var(--border_color);
+    background-color: var(--icon_color);
     border-radius: 5000px;
 
     content: "";
@@ -403,7 +403,7 @@ canvas.feature_chart{
     height: 90% !important;
 
     background-color:transparent;
-    border: 1px solid green;
+    border: 1px solid var(--border_color);
 }
 
 div.feature_chart_legend_container{

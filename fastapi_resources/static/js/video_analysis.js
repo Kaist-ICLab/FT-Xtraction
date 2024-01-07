@@ -51,6 +51,7 @@ pause_overlay.addEventListener("click", () => {
 //--------------------REPLAY VIDEO--------------------
 const replay_button = document.querySelector("div.replay_overlay")
 replay_button.addEventListener("click", () => {
+    // The current frame has to be maintained so that opencv does not close the capture and cause a threading issue.
     var fetch_body = {
         method: "POST",
         body: JSON.stringify({"set_current_frame": current_frame}),
@@ -108,7 +109,6 @@ progress_bar.addEventListener("click", (event) => {
     }
     clearInterval(update_progress_repeat_id)
     fetch("video_info/frame_info", fetch_body).then( () => {
-        console.log("SET AT SKIP")
         update_progress_repeat_id = setInterval(update_progress, update_progress_interval)
     })
 })
@@ -135,6 +135,7 @@ function get_current_frame(){
     )
 }
 
+// The progress has to be frequently updated so that the video progress can be reflected on the progress bar.
 function update_progress(){
     if (!paused && !video_ended){
         get_current_frame()
@@ -222,6 +223,7 @@ function link_video_overlays(video_overlay_ind, input_j){
 }
 
 //--------------------ANALYSIS TYPE SELECTION--------------------
+// In order to simplify the UI, only one type of analysis is displayed at a time.
 const analysis_type_selection_radios = document.querySelectorAll("input.analysis_type_selection_radio")
 for(let i=0; i<analysis_type_selection_radios.length; i++){
     analysis_type_selection_radios[i].addEventListener("click", () => {
@@ -271,7 +273,9 @@ for(let i=0; i<analysis_forms.length; i++){
     }
 }
 
-// //--------------------FEATURE CHART--------------------
+//--------------------FEATURE CHART--------------------
+// The charts are implemented using the Chart.js package; the following lists and objects are required as
+// per the Chart.js API.
 const dataset = []
 
 for(let i=0; i<feature_names.length; i++){
@@ -336,7 +340,8 @@ const feature_chart = new Chart(
     config
 );
 
-// //-----SUB FEATURE SELECTION-----
+//-----DERIVED FEATURE SELECTION-----
+// This section of code makes it so that users can select which people's features to display on the chart.
 const feature_chart_legend = document.querySelector("div.feature_chart_legend_container")
 const feature_analysis_selectors = document.querySelectorAll("input[type='radio'].analysis_selection_input")
 let feature_chart_legend_forms = []
@@ -392,6 +397,8 @@ for(let i=0; i<feature_names.length; i++){
     feature_chart_legend_forms.push(form_i)
 }
 
+// This is a helper function which adds interactivity to the Feature Graphs section.
+// It allows users to display the information of the feature they want to analyze.
 function link_chart_features(chart_feature_ind, input_k){
     input_k.addEventListener("click", () => {
         for(let i=0; i<feature_names.length; i++){
@@ -404,7 +411,6 @@ function link_chart_features(chart_feature_ind, input_k){
                     var is_hidden = feature_legend_elements[i][j].classList.contains("fade")
                     feature_chart.setDatasetVisibility(feature_offsets[i]+j, !is_hidden);
                 }
-                
             }
             else{
                 form_i.style["display"] = "none"

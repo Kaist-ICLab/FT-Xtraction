@@ -2,10 +2,15 @@ import requests
 import os
 import tarfile
 # DELETING PLACEHOLDERS
+
+# Placeholder files had to be placed in certain necessary but empty directories in order to upload them.
+# This section simply removes these placeholders as they will cause issues during the software execution.
 os.remove('./data/csv/placeholder.txt')
 os.remove('./data/video/placeholder.txt')
-os.remove('./feature_extraction/super_feature_extraction_utils/pose_detection/placeholder.txt')
+os.remove('feature_extraction/base_feature_extraction_utils/pose_detection/placeholder.txt')
 
+# The following two code blocks are used to download and move the requisite machine learning models
+# into the proper directories.
 
 # EMOTION MODEL DOWNLOAD
 model_link = "https://drive.google.com/u/0/uc?id=1Oy_9YmpkSKX1Q8jkOhJbz3Mc7qjyISzU&export=download"
@@ -20,7 +25,7 @@ for key, value in response.cookies.items():
 
 download_response = download_session.get(model_link, params={"confirm": download_token}, stream=True)
 
-with open("./feature_extraction/super_feature_extraction_utils/emotion_recognition/PrivateTest_model.t7", "wb") as f:
+with open("feature_extraction/base_feature_extraction_utils/emotion_recognition/PrivateTest_model.t7", "wb") as f:
     for chunk in response.iter_content(32768):
         if chunk:
             f.write(chunk)
@@ -29,7 +34,7 @@ with open("./feature_extraction/super_feature_extraction_utils/emotion_recogniti
 
 # POSE MODEL DOWNLOAD
 url = "https://storage.googleapis.com/tfhub-modules/google/movenet/multipose/lightning/1.tar.gz"
-model_path = './feature_extraction/super_feature_extraction_utils/pose_detection/tf_model.tar.gz'
+model_path = 'feature_extraction/base_feature_extraction_utils/pose_detection/tf_model.tar.gz'
 
 response = requests.get(url, stream=True)
 if response.status_code == 200:
@@ -37,6 +42,6 @@ if response.status_code == 200:
         f.write(response.raw.read())
 
 file = tarfile.open(model_path)
-file.extractall('./feature_extraction/super_feature_extraction_utils/pose_detection')
+file.extractall('./feature_extraction/base_feature_extraction_utils/pose_detection')
 file.close()
-os.remove('./feature_extraction/super_feature_extraction_utils/pose_detection/tf_model.tar.gz')
+os.remove('feature_extraction/base_feature_extraction_utils/pose_detection/tf_model.tar.gz')

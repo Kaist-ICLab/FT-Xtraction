@@ -3,6 +3,7 @@ let video_checkboxes = []
 let update_progress_interval = 100
 
 //--------------------VIDEO-CSV TABLE--------------------
+// This section of code is used to create the HTML elements that display the videos you can process.
 const table_body = document.querySelector("table.video_csv_list>tbody")
 let video_csv_csv_founds = []
 let video_csv_num_features = []
@@ -53,6 +54,7 @@ select_all.addEventListener("click", () => {
 })
 
 //--------------------FEATURE LIST--------------------
+//This section of code is used to generate the list of features you can extract.
 const feature_list_form = document.querySelector("form.feature_list_form")
 for(let i=0; i<features.length; i++){
     
@@ -79,8 +81,8 @@ for(let i=0; i<features.length; i++){
     })
 }
 
-//--------------------SIGNFICANT MOMENTS LIST--------------------
-
+//--------------------SIGNIFICANT MOMENTS LIST--------------------
+//This section of code generates the list of significant moments you can extract.
 const significant_moments_list_form = document.querySelector("form.significant_moments_list_form")
 for(let i=0; i<signficant_moments.length; i++){
     
@@ -178,6 +180,9 @@ create_csvs.addEventListener("click", () => {
 
 })
 
+// This function is used to retrieve the processing progress information.
+// It works by frequently sending a request to the server regarding the processing progress.
+// This information is then sent back to the client and displayed.
 function update_progress(){
 
     var fetch_body = {
@@ -202,7 +207,7 @@ function update_progress(){
     )
 }
 
-
+// This function handles all the necessary updates to the display after all the selected videos are done processing.
 function handle_end_of_processing(){
     var fetch_body = {
         method: "POST",

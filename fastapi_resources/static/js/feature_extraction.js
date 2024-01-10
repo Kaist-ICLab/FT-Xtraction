@@ -46,6 +46,7 @@ for(let i=0; i<video_names.length; i++){
 
 const select_all = document.querySelector("div.select_all")
 
+// Logic for the "select all" button.
 select_all.addEventListener("click", () => {
     for(let i=0; i<video_checkboxes.length; i++){
         video_checkboxes[i].checked=true;
@@ -123,7 +124,8 @@ let previous_ind = 0
 var vid_ind = 0
 var update_progress_id=0
 
-
+// When the user requests for the selected videos to be processed, this section of code will create an overlay
+// with processing progress information.
 create_csvs.addEventListener("click", () => {
     create_csv_overlay.style["display"]="flex"
     finished_processing_message.style["display"]="none"
@@ -145,9 +147,6 @@ create_csvs.addEventListener("click", () => {
             let td_i1 = document.createElement("td")
             let td_i2 = document.createElement("td")
             td_i2.style["width"]="15%"
-            // let progress_container_i = document.createElement("div")
-            // progress_container_i.className = "csv_progress_bar"
-
 
             td_i0.innerText = video_names[i]
             td_i1.innerText = "WAITING"
@@ -168,6 +167,7 @@ create_csvs.addEventListener("click", () => {
 
     previous_ind = hold_selected_vids[0]
 
+    // Sending the request to process select videos to the server. The selected videos and features are sent.
     var fetch_body = {
         method: "POST",
         body: JSON.stringify({"video_indices": selected_videos, "selected_features": selected_features, "selected_significant_moments": selected_significant_moments}),
@@ -251,11 +251,13 @@ function handle_end_of_processing(){
     }) 
 }
 
+// Logic to return the processing page to normal after processing has been halted or is finished.
 function close_progress_overlay(){
     create_csv_overlay.style["display"]="none";
 }
 
-
+// Sends a request to stop the server from further processing the selected videos. After the processing is stopped, the
+// processing progress overlay is automaticlly closed.
 function stop_processing(){
     var fetch_body = {
         method: "POST",
@@ -266,6 +268,3 @@ function stop_processing(){
         close_progress_overlay()
     })
 }
-
-
-

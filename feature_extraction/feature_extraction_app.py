@@ -4,10 +4,13 @@ import settings
 from feature_extraction import video_processing as vp
 
 #--------------------FASTAPI SETUP--------------------
+# Initializing the app that handles all the video processing logic.
 extraction_app = FastAPI()
 
 
 #--------------------APP SETUP--------------------
+# Setting the URL that handles video processing requests. It collects the requested videos to be processed as well as
+# the features to be extracted; this information is the given to the video processing function.
 @extraction_app.post("/extraction_info")
 async def handle_extract_request(request: Request):
     data = await request.json()
@@ -21,7 +24,8 @@ async def handle_extract_request(request: Request):
     await vp.process_video(video_indices, selected_features, selected_significant_moments)
     return {"message": "message"}
 
-
+# Setting the URL that handles processing progress requests; periodically the client will request an update on the
+# processing or extraction progress, at which point the server returns the requested information.
 @extraction_app.post("/extraction_progress")
 async def handle_update_time(request: Request):
     global est_time, processing_progress
@@ -30,6 +34,8 @@ async def handle_update_time(request: Request):
             "current_video": vp.current_video_ind}
 
 
+# Setting the URL that updates all the metadata in "./settings.py" after video processing is stopped or has been
+# completed.
 @extraction_app.post("/update_lists")
 async def handle_update_list(request: Request):
     _ = await request.json()
@@ -37,6 +43,8 @@ async def handle_update_list(request: Request):
     return {"csv_exists_list": settings.csv_exists, "number_features": settings.num_features}
 
 
+# Setting the URL that handles requests to stop the processing; this simply raises a flag that informs the video
+# processing function to stop the processing.
 @extraction_app.post("/stop_processing")
 async def handle_stop_processing(request: Request):
     _ = await request.json()

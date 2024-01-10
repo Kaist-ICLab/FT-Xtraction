@@ -2,9 +2,11 @@ import tensorflow as tf
 import cv2 as cv
 import mediapipe as mp
 
-# This file is used to initialize all the models used.
+# This file is used to initialize all the machine learning models used.
 
 #--------------------POSE DETECTION SETUP--------------------
+# Used to limit the pose detection model's memory usage. This is to prevent any issues when using multiple
+# models concurrently.
 gpus = tf.config.experimental.list_physical_devices('GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
@@ -16,6 +18,9 @@ pose_model = movenet.signatures['serving_default']
 pose_input_size = [352, 608]
 
 #--------------------FACE DETECTION SETUP--------------------
+# There are two models initialized here. The first is the Haar Cascades model given by opencv and the second is the
+# mediapipe facial detection model. The mediapipe model can handle most facial detection cases, however in some rare
+# situations it cannot, we rely on Haar Cascades as a backup.
 cascade_classifier = cv.CascadeClassifier(cv.data.haarcascades + 'haarcascade_profileface.xml')
 
 mp_face_detection = mp.solutions.face_detection

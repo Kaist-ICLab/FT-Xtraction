@@ -1,7 +1,9 @@
 import numpy as np
 
 #--------------------CONSTANTS--------------------
+# These are constants used in the calculations below.
 
+# EPS is an arbitrarily small value used to prevent division by 0 and log(0) errors.
 EPS = 0.0000000001
 LOG_7 = np.log(7)
 
@@ -13,6 +15,8 @@ FACE_POINTS = [1, 33, 61, 199, 263, 291]
 #--------------------MAIN FUNCTIONS--------------------
 
 
+# This function collects the all the emotions expressed by everyone over a set amount of frames and combiens them
+# into a vector for each person.
 def calculate_total_emotion_vectors(collected_features, collected_extra_features):
     # Although collected_extra_features is not needed in this function, it is used in others. This is maintained in
     # order to allow loops to be used and to facilitate custom feature creation.
@@ -22,6 +26,8 @@ def calculate_total_emotion_vectors(collected_features, collected_extra_features
     return emotion_vectors.reshape(-1)
 
 
+# This function calculates the emotional entropy, or emotional randomness, of each person over a set amount of frames.
+# This si done using Shannon's entropy.
 def calculate_emotion_entropies(collected_features, collected_extra_features):
     focus_feature = collected_features[0]
     emotion_vectors = np.sum(focus_feature, axis=1, dtype=np.uint8)
@@ -33,6 +39,8 @@ def calculate_emotion_entropies(collected_features, collected_extra_features):
     return emotion_entropies
 
 
+# This function calculates the emotion synchronicity between every pair of people by taking the euclidean distances
+# between the total emotion vectors of each person.
 def calculate_emotion_synchronicities(collected_features, collected_extra_features):
     num_pairs = int((collected_features[0].shape[0]*(collected_features[0].shape[0]-1))/2)
 
@@ -51,6 +59,9 @@ def calculate_emotion_synchronicities(collected_features, collected_extra_featur
     return emotion_synchronicities
 
 
+# This function calculates the average lip movement of people. This is done by taking the upper and lower lip
+# keypoints, taking the vertical distances between the average lip keypoints, and finding the average of the euclidean
+# distance between the lip distance in one frame and the lip distance in the following frame.
 def calculate_lip_movement(collected_features, collected_extra_features):
     focus_feature = collected_features[2][:, :, :, 1]
 
@@ -68,6 +79,9 @@ def calculate_lip_movement(collected_features, collected_extra_features):
     return average_movement
 
 
+# This is used to calculate whether two people interacted or not; this is done by determining the gaze direction of one
+# person, projecting it onto the bounding box of another person, and seeing if there is a collision. The gaze direction
+# calculated using the chin, forehead, and nose keypoints.
 def calculate_interactions(collected_features, collected_extra_features):
     focus_feature = collected_features[2]
     extra_feature = collected_extra_features[0]
@@ -82,6 +96,7 @@ def calculate_interactions(collected_features, collected_extra_features):
         for j in range(i+1, focus_feature.shape[0]):
             directions_j = get_direction(focus_feature[j])
             for k in range(len(directions_i)):
+                # calculating the gaze direction
                 origin_x_i = focus_feature[i, k, 1, 0]
                 origin_y_i = focus_feature[i, k, 1, 1]
                 m_i = directions_i[0][k]
@@ -113,6 +128,8 @@ def calculate_interactions(collected_features, collected_extra_features):
     return interactions
 
 
+# Calculates the average activeness of each person; this is done by taking the euclidean distance between one frame
+# and the frame following it.
 def calculate_activeness(collected_features, collected_extra_features):
     focus_feature = collected_features[1]
 
@@ -128,7 +145,8 @@ def calculate_activeness(collected_features, collected_extra_features):
     
     return activeness
 
-
+# Calculates the average distance between people; this is done by taking the average euclidean distance between the
+# pose keypoints of two people
 def calculate_people_proximities(collected_features, collected_extra_features):
     focus_feature = collected_features[1]
 
@@ -147,6 +165,8 @@ def calculate_people_proximities(collected_features, collected_extra_features):
     return people_proximities
 
 
+# Calculates the pose synchronicity between each pair of people. This is done by first calculating a few major pose
+# angles that we determined and finding the average euclidean distance between those among the set amount of frames.
 def calculate_pose_synchronicities(collected_features, collected_extra_features):
     focus_feature = collected_features[1]
 
@@ -182,7 +202,7 @@ def detect_multiple_people(collected_features, collected_extra_features):
 
 DIRECTION_POINTS = [10, 152]
 
-
+# Calculates the gaze direction based on chin and forehead keypoints
 def get_direction(landmarks):
     coords = landmarks[:, DIRECTION_POINTS, :2]
     nose = landmarks[:, 1, :2]
@@ -202,6 +222,8 @@ def get_direction(landmarks):
     return m, d
 
 
+# This function projects the gaze direction of one person onto the facial bounding box of another; if a collision
+# between the projected gaze and the bounding box occurs, a collision is detected.
 def detect_interaction(origin_x, origin_y, m, d, lower_x, upper_x, lower_y, upper_y):
     if d == 1:
         y_projected = origin_y+(lower_x-origin_x)*m
@@ -214,6 +236,7 @@ def detect_interaction(origin_x, origin_y, m, d, lower_x, upper_x, lower_y, uppe
         return 0
 
 
+# Function to calculate the pre-determined pose angles using the dot product rule.
 def calculate_pose_angles(keypoints):
     left_forearm = keypoints[10] - keypoints[8]
     left_upper_arm = keypoints[6] - keypoints[8]

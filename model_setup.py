@@ -13,6 +13,8 @@ os.remove('feature_extraction/base_feature_extraction_utils/pose_detection/place
 # into the proper directories.
 
 # EMOTION MODEL DOWNLOAD
+# The emotion recognition model is stored in Google Drive; we use the requests library to automatically download the
+# model.
 model_link = "https://drive.google.com/u/0/uc?id=1Oy_9YmpkSKX1Q8jkOhJbz3Mc7qjyISzU&export=download"
 download_session = requests.Session()
 response = download_session.get(model_link, stream=True)
@@ -31,8 +33,8 @@ with open("feature_extraction/base_feature_extraction_utils/emotion_recognition/
             f.write(chunk)
 
 
-
 # POSE MODEL DOWNLOAD
+# The pose detection model is downloaded from Google storage using requests.
 url = "https://storage.googleapis.com/tfhub-modules/google/movenet/multipose/lightning/1.tar.gz"
 model_path = 'feature_extraction/base_feature_extraction_utils/pose_detection/tf_model.tar.gz'
 

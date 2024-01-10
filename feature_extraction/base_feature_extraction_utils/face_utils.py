@@ -4,6 +4,7 @@ import numpy as np
 import model_initialization
 
 
+# Detects faces from an image using the Haar Cascades model initialized in "./model_intialization.py"
 def detect_face_haar(img):
     g_img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     faces = model_initialization.cascade_classifier.detectMultiScale(g_img, scaleFactor=1.1, minNeighbors=5)
@@ -17,7 +18,7 @@ def detect_face_haar(img):
 
     return face_bounding_boxes
 
-
+# Detects faces from an image using the mediapipe model initialized in "./model_intialization.py"
 def detect_face_mediapipe(img):
 
     rgb_img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
@@ -38,10 +39,13 @@ def detect_face_mediapipe(img):
     return face_bounding_boxes
 
 
+# Classifies the emotions of a person using the emotion recognition model in
+# "./feature_extraction/base_feature_extraction_utils/emotion_recognition.
 def classify_emotion(img):
     return e_rec.classify_emotion(img)
 
 
+# Extracts the facial landmarks of a person using the model defined in "./model_intialization.py".
 def extract_face_mesh(img):
     landmarks = np.zeros((468, 3))
 

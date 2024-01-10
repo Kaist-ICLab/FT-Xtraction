@@ -11,17 +11,20 @@ from feature_visualization import video_overlays as vo
 from feature_extraction import feature_extraction_app
 from feature_visualization import video_analysis_app
 #--------------------FASTAPI SETUP--------------------
+# This section creates an instance of the FastAPI class and connects the all the supporting files (HTMl, CSS, and JS).
 app = FastAPI()
 templates = Jinja2Templates(directory="./fastapi_resources/templates")
 app.mount("/static", StaticFiles(directory="./fastapi_resources/static"), name="static")
 
 
 #--------------------MAIN APP SETUP--------------------
+# Defining the root URL and adding the template to the root; this will serve as the entr page.
 @app.get("/")
 def root(request: Request):
     return templates.TemplateResponse("entry_page.html", {"request": request})
 
 
+# URL for accepting shutdown signals which result in a graceful shutodwn.
 @app.post("/shutdown")
 async def shutdown_server(request: Request):
     _ = await request.json()
@@ -31,6 +34,7 @@ async def shutdown_server(request: Request):
     return {"message": "message"}
 
 
+# This function is needed to forcefully close the server whe needed.
 def kill_server(*args):
     settings.server_running = False
     os.kill(os.getpid(), signal.SIGTERM)
@@ -44,6 +48,8 @@ def handle_kill_server():
 
 
 #--------------------TEMPLATING APPS--------------------
+# This section defines the URL points for the other pages and templates them. In each template response, a dictionary
+# of information we want to pass from the server to the client side is also provided.
 @feature_extraction_app.extraction_app.get("/")
 def exctraction_root(request: Request):
     settings.update_lists()
@@ -78,6 +84,7 @@ def video_root(request: Request):
 video_analysis_app.video_app.mount("/static", StaticFiles(directory="./fastapi_resources/static"), name="static")
 
 #--------------------MOUNTING VIDEO APP--------------------
+# Attaching the apps that handle the logic of the other pages onto the main app.
 app.mount("/feature_extraction", feature_extraction_app.extraction_app)
 app.mount("/video_analysis", video_analysis_app.video_app)
 

@@ -8,6 +8,9 @@ import face_recognition as fr
 overlay_names = ["Person Identification", "Emotion Recognition", "Pose Detection"]
 
 
+# This function identifies people in a given image, compares their face encodings to those of the people in the
+# face images supplementing the video, and writes down the name of the person in the video frame under their face.
+# Additionally, a box is drawn around the person's face according to their facial bounding box.
 def draw_people(img):
     encoding_list = settings.encodings[settings.current_video_ind]
 
@@ -43,6 +46,8 @@ def draw_people(img):
     return img
 
 
+# This function recognizes the facial emotions of people in the input video frame and writes the expressed emotion
+# under their face. Additionally, a box is drawn around the person's face according to their facial bounding box.
 def draw_emotion(img):
     face_bbs = fu.detect_face_mediapipe(img)
     if not face_bbs:
@@ -72,6 +77,8 @@ def draw_emotion(img):
     return img
 
 
+# This simply draws the pose keypoints and pose skeleton (defined in the list EDGES in line 105 of "./settings.py") over
+# each person.
 def draw_pose(img):
     keypoints, pose_bbs = pu.detect_keypoints(img, len(settings.img_lists[settings.current_video_ind]))
     
@@ -88,6 +95,7 @@ def draw_pose(img):
 
 
 # UTILS
+# This function finds which person's facial encoding best matches the unknown encoding.
 def best_person_match(known_encodings, unknown_encoding):
     face_distances = fr.face_distance([kn[0] for kn in known_encodings], unknown_encoding[0])
     if len(face_distances.shape) == 1:
@@ -99,8 +107,11 @@ def best_person_match(known_encodings, unknown_encoding):
 # This helper function is used to match each person to the extracted data. This is done by comparing their face
 # encodings.
 def resolve_people(known_encoding_list, unknown_encoding_list):
+    # Mark all people as unresolved, by using -1.
     resolved_inds = [-1 for _ in known_encoding_list]
-    
+
+    # The best person is matched and the index of the unknown encoding is placed into resolved_inds at the index
+    # corresponding to the matched person.
     if len(unknown_encoding_list) <= len(known_encoding_list):
         possible_inds = [i for i in range(len(known_encoding_list))]
         for i in range(len(unknown_encoding_list)):

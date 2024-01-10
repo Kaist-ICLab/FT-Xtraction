@@ -2,7 +2,9 @@ import numpy as np
 import tensorflow as tf
 import model_initialization
 
-
+# Detects the pose keypoints of the people in a given video frame; the number of people must be specified in this case
+# since the pose detection model returns values of 6 detected people regardless of how many there actually are in
+# each video.
 def detect_keypoints(img, num_people):
 
     resized_img = tf.expand_dims(tf.cast(tf.image.resize_with_pad(img, model_initialization.pose_input_size[0],

@@ -5,6 +5,7 @@ import face_recognition as fr
 import settings
 
 
+# Extracts the face encoding from an image of a face.
 def get_face_encoding(face_img_path):
     img = cv.imread(face_img_path)
     encoded = fr.face_encodings(img, known_face_locations=[(1, 1, img.shape[1] - 1, img.shape[0] - 1)])
@@ -20,6 +21,7 @@ class Person:
         emotion_vectors = np.zeros((n_frames, 7), dtype=np.uint8)
         pose_keypoints = np.zeros((n_frames, 17, 2), dtype=np.float32)
         face_landmarks = np.zeros((n_frames, 468, 3), dtype=np.float32)
+        # This list contains all of the extracted features.
         self.extracted_features = [emotion_vectors, pose_keypoints, face_landmarks]
 
         face_bounding_boxes = np.zeros((n_frames, 4), dtype=np.float32)
@@ -33,6 +35,7 @@ class Person:
             feature *= 0
 
 
+# Used to initialize several Person classes based on the number of faces that have been uploaded for a given video.
 def init_people_list(img_list):
     people_list = []
     for i in range(len(img_list)):
@@ -47,10 +50,11 @@ class InfoTable:
     def __init__(self, img_list):
         self.people_list = init_people_list(img_list)
         self.encodings = [person.encoding for person in self.people_list]
-    
-    def extract_data(self, img, cur_frame, super_feature_extraction_inds):
-        for i in range(len(super_feature_extraction_inds)):
-            ind = super_feature_extraction_inds[i]
+
+    # extracts the requested data from a given image.
+    def extract_data(self, img, cur_frame, base_feature_extraction_inds):
+        for i in range(len(base_feature_extraction_inds)):
+            ind = base_feature_extraction_inds[i]
             face_bbs, unknown_encodings, information = settings.base_feature_functions[ind](img, len(self.people_list))
             resolved_people = self.resolve_people(unknown_encodings)
             for j in range(len(resolved_people)):
@@ -60,7 +64,8 @@ class InfoTable:
                         self.people_list[j].extra_features[0][cur_frame] = face_bbs[resolved_people[j]]
         
         return None
-    
+
+    # This function is used to match people to their encodings.
     def resolve_people(self, unknown_encoding_list):
         resolved_inds = [-1 for _ in self.people_list]
         
@@ -86,6 +91,8 @@ class InfoTable:
 
         return resolved_inds
 
+    # This function calculates all the requested derived features by calling the functions that calculate them. The
+    # information is collected together and returned as a single array in order to be written onto a CSV file.
     def calculate_features(self, selected_feature_inds):
         all_information = []
         collected_features = []
@@ -124,11 +131,13 @@ class InfoTable:
 
         return np.array(all_information)
 
+    # Used to reset all the data array elements to 0.
     def reset(self):
         for person in self.people_list:
             person.reset()
 
 
+# Used to find the person whose encoding best matches the unknowing encoding.
 def best_person_match(known_encodings, unknown_encoding):
     face_distances = fr.face_distance(known_encodings, unknown_encoding)
     if len(face_distances.shape) == 1:

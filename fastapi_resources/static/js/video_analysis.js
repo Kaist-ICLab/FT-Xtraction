@@ -1,9 +1,12 @@
 const update_progress_interval = 500
 
+// These lists are used to facilitate the dynamic creation of HTML elements
 const all_analysis_names = [overlay_names, significant_moment_names, feature_names]
 const analysis_input_types = ["checkbox", "checkbox", "radio"]
 
 //--------------------UTILS--------------------
+// This function is used to change the video being analyzed. After a request is sent to the server, the page is
+// refreshed in order to reset all the video analysis flags.
 function select_video (i) {
     if (i!=localStorage["video_index"]){
         localStorage["video_index"] = i
@@ -24,6 +27,7 @@ const pause_overlay = document.querySelector("div.pause_overlay")
 var paused = true;
 var video_ended = false;
 
+// Logic for pausing the video
 pause_overlay.addEventListener("click", () => {
     paused = !paused;
 
@@ -49,6 +53,7 @@ pause_overlay.addEventListener("click", () => {
 })
 
 //--------------------REPLAY VIDEO--------------------
+// Logic for replaying the video.
 const replay_button = document.querySelector("div.replay_overlay")
 replay_button.addEventListener("click", () => {
     // The current frame has to be maintained so that opencv does not close the capture and cause a threading issue.
@@ -88,6 +93,7 @@ var current_frame = 0
 var seconds = 0
 var current_time = new Date()
 
+// Logic that allows users to skip to a given frame and logic that updates the video progress bar.
 progress_bar.addEventListener("click", (event) => {
     mouse_diff = event.clientX - progress_bar_left
     progress_bar.style.setProperty("--video_progress", `${mouse_diff}px`);
@@ -98,6 +104,7 @@ progress_bar.addEventListener("click", (event) => {
     frame_counter.innerText = current_frame
     timer.innerText = new Date(seconds * 1000).toISOString().substring(11,19)
 
+    // Logic for moving the feature chart to the appropriate x-value.
     feature_chart.options.scales.x.min = current_frame<total_frame_count-chart_frame_width*10 ? current_frame : total_frame_count-chart_frame_width*10
     feature_chart.options.scales.x.max = current_frame<total_frame_count-chart_frame_width*10 ? current_frame+chart_frame_width*10 : total_frame_count
     feature_chart.update()
@@ -113,6 +120,7 @@ progress_bar.addEventListener("click", (event) => {
     })
 })
 
+// Function for requesting the current frame number. After receiving the value, the video progress bar is updated.
 function get_current_frame(){
     var fetch_body = {
         method: "POST",
@@ -182,6 +190,7 @@ function link_significant_moments(sig_moment_ind, input_j){
 }
 
 //--------------------VIDEO SELECTION--------------------
+// Creating the HTML for the video selection section and linking the aforementioned video selection logic.
 const video_selection_form = document.querySelector("form.video_selection_form")
 for(let i=0; i<video_names.length; i++){
     const input_container_i = document.createElement("div")
@@ -210,6 +219,7 @@ for(let i=0; i<video_names.length; i++){
 document.querySelectorAll("input.video_selection_input")[current_video_ind].checked = true
 
 //--------------------VIDEO OVERLAY SELECTION--------------------
+// Function for sending the video overlay flags to the server side.
 function link_video_overlays(video_overlay_ind, input_j){
     input_j.addEventListener("click", () => {
         overlay_flags[video_overlay_ind] = input_j.checked
@@ -223,10 +233,11 @@ function link_video_overlays(video_overlay_ind, input_j){
 }
 
 //--------------------ANALYSIS TYPE SELECTION--------------------
-// In order to simplify the UI, only one type of analysis is displayed at a time.
+// Creating the HTML for selecting analysis types.
 const analysis_type_selection_radios = document.querySelectorAll("input.analysis_type_selection_radio")
 for(let i=0; i<analysis_type_selection_radios.length; i++){
     analysis_type_selection_radios[i].addEventListener("click", () => {
+        // In order to simplify the UI, only one type of analysis is displayed at a time.
         for(let j=0; j<analysis_forms.length; j++){
             if(i==j){
                 analysis_forms[j].style["display"] = "block"
@@ -239,6 +250,7 @@ for(let i=0; i<analysis_type_selection_radios.length; i++){
 }
 
 //--------------------ANALYSIS SELECTION--------------------
+// Creating the HTML elements for the analysis sections.
 const analysis_forms = document.querySelectorAll("form.analysis_selection_form")
 
 const input_linking_handlers = [link_video_overlays,link_significant_moments,link_chart_features]
@@ -278,6 +290,7 @@ for(let i=0; i<analysis_forms.length; i++){
 // per the Chart.js API.
 const dataset = []
 
+// Creating the dataset.
 for(let i=0; i<feature_names.length; i++){
     for(let j=0; j<sub_feature_names[i].length; j++){
         let color_array_j = graph_colors[i][j]
@@ -297,6 +310,7 @@ for(let i=0; i<feature_names.length; i++){
 
 const data = {datasets: dataset}
 
+// Configuring the chart
 const config = {
     type: 'line',
     data,
@@ -335,6 +349,7 @@ const config = {
     }
 };
 
+// Creating the chart.
 const feature_chart = new Chart(
     document.querySelector("canvas.feature_chart"),
     config

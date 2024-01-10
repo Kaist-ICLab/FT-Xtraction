@@ -8,11 +8,14 @@ import cv2 as cv
 from feature_extraction import base_feature_extraction as sfe, derived_feature_extraction as fa
 
 #--------------------SERVER FLAGS--------------------
+# Flags used during server operation; used to signal shutdowns, terminate video processing, and perform video
+# replays.
 server_running = True
 end_processing = False
 end_video = False
 
 #--------------------EXTRACTION SETTINGS--------------------
+# Sets up lists containing the paths of all the videos and their supplementary files.
 video_data_dir = "./data/video"
 csv_data_dir = "./data/csv"
 vids = [i for i in os.listdir(video_data_dir) if i != ".DS_Store"]
@@ -42,10 +45,13 @@ def get_encoding_im(img, bb):
 
 encodings = [[get_encoding(j) for j in i] for i in img_lists]
 
+# Lists that are filled with the requisite information and sent to the client side in order to inform the user
+# of which videos have been processed and with how many features.
 csv_exists = [] 
 num_features = []
 n_frames = 10
 
+# List of all the features that can be extracted.
 base_feature_functions = [sfe.extract_emotion, sfe.extract_pose, sfe.extract_facial_landmarks]
 derived_features = [{"feature_name": "Total Emotion Vectors", "feature_extraction_function":
                 fa.calculate_total_emotion_vectors, "base_derived_mapping": 0},
@@ -64,6 +70,7 @@ derived_features = [{"feature_name": "Total Emotion Vectors", "feature_extractio
             {"feature_name": "Activeness", "feature_extraction_function":
                 fa.calculate_activeness, "base_derived_mapping": 1}]
 
+# List containing the derived feature; this information is used only for video processing and chart name creation.
 feature_processing_info = {"Total Emotion Vectors": {"is_pair": False, "sub_name_list":
                            ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']},
                            "Emotion Entropy": {"is_pair": False, "sub_name_list": None},
@@ -132,18 +139,23 @@ def load_video():
         video_replay, video_ended, current_frame, skip_frame, video_max_frames, feature_graph_colors, sig_colors, \
         feature_offsets, video_paused, fps, sig_names, sig_data
 
+    # The validity of a video is checked before it is analyzed; invalid videos can cause errors.
     check_validity()
     if capture is not None:
         # Necessary if a previous video is already loaded
         capture.release()
+
+    # Loading the chosen video and collecting the requisite meta data.
     capture = cv.VideoCapture(video_list[current_video_ind])
     video_max_frames = int(capture.get(cv.CAP_PROP_FRAME_COUNT))
     fps = int(capture.get(cv.CAP_PROP_FPS))
     video_name = '.'.join(video_names[current_video_ind].split('.')[:-1])
     people_names = img_names[current_video_ind]
 
+    # Processing the supporting CSV for the chosen video's analysis.
     feature_names, derived_feature_names, feature_data, feature_graph_colors = process_csv(video_name, people_names)
 
+    # Significant moments are stored in a separate file.
     if f"{video_name}_sig.csv" in os.listdir(csv_data_dir):
         sig_names, sig_data, sig_colors = process_sig_csv(video_name)
     else:
@@ -172,6 +184,7 @@ def process_sig_csv(video_name):
 
         extracted_feature_names = next(csv_reader)
         sig_lists = [[] for i in extracted_feature_names]
+        # Since an unconstrained number of people and features can be extracted, chart color are randomly generated.
         raw_sig_colors = (np.random.rand(len(sig_lists), 3) * 255).astype(np.uint8).tolist()
         sig_colors = [f"rgb({color[0]}, {color[1]}, {color[2]})" for color in raw_sig_colors]
 
@@ -258,6 +271,7 @@ def create_processing_lists(extracted_feature_names, people_names):
         feature_data_i = []
         feature_inds_i = []
 
+        # Creating lists for all features that analyze people in pairs.
         if feature_details_i["is_pair"]:
             for j in range(len(people_names)-1):
                 for k in range(j+1,len(people_names)):
@@ -273,6 +287,8 @@ def create_processing_lists(extracted_feature_names, people_names):
                         feature_data_i.append([])
                         feature_inds_i.append(acc)
                         acc += 1
+
+        # Creating lists for all features that analyze people individually.
         else:
             for j in range(len(people_names)):
                 name_j = people_names[j]
@@ -315,14 +331,17 @@ def check_validity():
         header = next(csv_reader)
         data = next(csv_reader)
         num_feature_csv = len(data)
-    
+
+    # Checks if only valid features were extracted; also checks for if the CSV was processed using the software or not.
     for feature in header:
         if feature not in feature_processing_info:
             print(f"{feature} is not a valid feature name")
             exit()
 
     num_people = len(img_names[current_video_ind])
-    
+
+    # Checking whether the number of elements in the extracted data matches expected number given the selected
+    # features and number of people.
     for i in range(len(header)):
         feature_details_i = feature_processing_info[header[i]]
         if feature_details_i["is_pair"]:

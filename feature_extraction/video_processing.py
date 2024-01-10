@@ -9,6 +9,7 @@ import cv2 as cv
 import settings
 from feature_extraction.feature_extraction_utils import InfoTable
 
+# Variables required to process a given video and report the processing progress.
 current_video_ind = 0
 processing_progress = 0
 start_time = 0
@@ -34,6 +35,7 @@ async def process_video(video_indices, selected_features, selected_significant_m
             est_time = "0:00:00"
             start_time = time.time()
 
+            # Creating CSV file paths
             current_video = settings.video_list[i]
             current_csv = os.path.join(settings.csv_data_dir, f"{'.'.join(settings.video_names[i].split('.')[:-1])}.csv")
             current_sig_csv = os.path.join(settings.csv_data_dir, f"{'.'.join(settings.video_names[i].split('.')[:-1])}_sig.csv")
@@ -47,6 +49,7 @@ async def process_video(video_indices, selected_features, selected_significant_m
             header_sig_moment = [settings.significant_moment_names[j] for j in selected_significant_moments]
 
             with open(current_csv, 'w', newline='') as csv_file, open(current_sig_csv, 'w', newline='') as sig_csv_file:
+                # Setting up the CSVs
                 csv_writer = csv.writer(csv_file, delimiter=",", quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 csv_writer_sig = csv.writer(sig_csv_file, delimiter=",", quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 csv_writer.writerow(header)
@@ -64,6 +67,8 @@ async def process_video(video_indices, selected_features, selected_significant_m
 
                     cur_frame += 1
 
+                    # Calculates all the derived features, collects them, and writes them into the CSVs after a set
+                    # amount of frames, after which the data structures are reset.
                     if (cur_frame % settings.n_frames) == 0:
                         info = info_table_i.calculate_features(selected_features)
                         info_sig = info_table_i.calculate_sigm(selected_significant_moments, cur_frame)
@@ -81,9 +86,11 @@ async def process_video(video_indices, selected_features, selected_significant_m
 
                     if settings.end_processing:
                         break
-                    
+
+                    # Required for periodic updates on the processing progress.
                     await asyncio.sleep(0.1)
-                
+
+            # Stops the processing loop and resets the end_processing flag.
             if settings.end_processing:
                 settings.end_processing = False
                 break

@@ -2,7 +2,9 @@ import face_recognition as fr
 from feature_extraction.base_feature_extraction_utils import face_utils as fu, pose_utils as pu
 import numpy as np
 
-
+# This extracts the emotion of all the people in a given image. Before extracting the emotions, the facial bounding
+# boxes of all detected people are extracted. An image of just the detected faces are then run through the emotion
+# recognition model.
 def extract_emotion(img, num_people):
     # Even though num_people is not used, the parameter must remain in order to allow loops to be used during
     # processing. This also allows users to easily add their own base features.
@@ -27,6 +29,8 @@ def extract_emotion(img, num_people):
     return face_bbs[:], unknown_encodings[:], emotion_information[:]
 
 
+# This extracts the pose or posture of all the people in a given image. First all the poses are extracted, and then
+# the faces of the people within the pose bounding box are taken and encoded.
 def extract_pose(img, num_people):
     unknown_encodings = []
     pose_information = []
@@ -61,6 +65,8 @@ def extract_pose(img, num_people):
     return face_bbs, unknown_encodings, pose_information
 
 
+# This extracts the facial landmarks of all people in an image. It first detects the faces of the people in the image
+# and uses the sub-image defined by the detected facial bounding box to obtain the facial landmarks.
 def extract_facial_landmarks(img, num_people):
     unknown_encodings = []
     facial_landmark_information = []

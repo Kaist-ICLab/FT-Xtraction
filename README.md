@@ -1,5 +1,5 @@
 # FT-Xtraction
-FT-Xtraction is a locally hosted video processing and analysis website built on Python. It allows you to process videos by extracting features from it (further details down below), and analyze the processed videos. During the analysis, you can view the extracted features in a line chart that updates in real time with the video. You can also add video overlays in case you want to analyze certain features in real time. If the in-built features don’t fit your needs, you can add custom features quite easily (instructions given in the documentation and the “User Guide” page of the website).
+FT-Xtraction is a locally hosted video processing and analysis website built on Python. It allows you to process videos by extracting features from it (further details down below), and analyze the processed videos. During the analysis, you can view the extracted features in a line chart that updates in real time with the video. You can also add video overlays in case you want to analyze certain features in real time. If the in-built features don’t fit your needs, you can add custom features quite easily (instructions given in the documentation).
 
 ## Motivation
 Video data analysis has been used in a variety of applications, including urban traffic surveillance, sports coaching, surgical, video retrieval and education. Furthermore, advances in artificial intelligence have enabled researchers to use video analysis for complex tasks such as detecting nuances that are known to be difficult for machines to predict.; more specifically, video data has been used in melancholia detection, social behavior analysis in mice, behavior analysis of children with autism for the purpose of improving teaching, and so on.
@@ -46,7 +46,7 @@ Before you can process and analyze your videos, you must upload them to the corr
 ## Main Pages
 FT-Xtraction has three main pages.
 
-- **User Guide:** This page provides instructions on how to upload the videos and the supplementary files to the proper directories, as well as how to create custom features.
+- **User Guide:** This page provides instructions on how to upload the videos and the supplementary files to the proper directories, as well as how to create custom features. These instructions are also written in the documentation.
 
 - **Feature Extraction:** This page is where you process your videos. Upon opening the page, you can see what videos can be processed, whether they have already been processed or not, and how many features have been processed. From here, you can select the video you want to process, the feature you want extracted, and the significant moments you want extracted. Once processing starts, a popup appears showing the processing progress as well as how much time is left until a given video is finished. Processing can be ended any time; all the features extracted until that point will still be saved in a CSV. Due to how the CSVs are created and how they are processed during video analysis, you must use this page to process your videos.
 

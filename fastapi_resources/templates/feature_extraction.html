@@ -34,6 +34,15 @@
             <form class="feature_list_form"></form>
         </div>
 
+        <div class="container ordering_choice_container">
+            <div class="form_title">Person Ordering</div>
+            <input type="radio" id="dynamic_order" name="ordering_choice" checked="True">
+            <label for="dynamic_order">Dynamic Ordering</label><br>
+            <input type="radio" id="fixed_order" name="ordering_choice">
+            <label for="fixed_order">Fixed Ordering</label><br>
+            <input type="text" id="name_ordering" name="name_ordering"><br>
+        </div>
+
         <div class="container significant_moments_list_container">
             <div class="form_title">Available Significant Moments</div>
             <form class="significant_moments_list_form"></form>
@@ -81,6 +90,16 @@
         let selected_features = features.map(() => false)
         const signficant_moments = {{signficant_moments_list|safe}}
         let selected_significant_moments = signficant_moments.map(() => false)
+
+        // const video_names = ["a",'b','c']
+        // let csv_found= [false,false,false]
+
+        // let num_features = [1,2,3]
+        // let selected_videos = video_names.map(() => false)
+        // const features = ["a1","a2","a3"]
+        // let selected_features = features.map(() => false)
+        // const signficant_moments = ["a23","a44","a42"]
+        // let selected_significant_moments = signficant_moments.map(() => false)
     </script>
     <script type="text/javascript" src="../static/js/feature_extraction.js"></script>
 </html>

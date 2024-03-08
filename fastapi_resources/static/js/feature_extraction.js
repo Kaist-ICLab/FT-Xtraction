@@ -117,6 +117,11 @@ const progress_table_body = document.querySelector("table.csv_progress_table>tbo
 const finished_processing_message = document.querySelector("div.finished_processing_message")
 const close_progress_overlay_button = document.querySelector("div.close_progress_overlay")
 const stop_processing_button = document.querySelector("div.stop_processing")
+
+const ordering_selector = document.querySelector("input#fixed_order")
+const ordering_list = document.querySelector("input#name_ordering")
+
+
 let processing_vid_times = []
 let processing_vid_percents = []
 let hold_selected_vids = []
@@ -170,7 +175,7 @@ create_csvs.addEventListener("click", () => {
     // Sending the request to process select videos to the server. The selected videos and features are sent.
     var fetch_body = {
         method: "POST",
-        body: JSON.stringify({"video_indices": selected_videos, "selected_features": selected_features, "selected_significant_moments": selected_significant_moments}),
+        body: JSON.stringify({"fixed_ordering":ordering_selector.checked, "ordering_names":ordering_list.value, "video_indices": selected_videos, "selected_features": selected_features, "selected_significant_moments": selected_significant_moments}),
         headers: {"Content-type": "application/json"}
     }
 
@@ -195,6 +200,7 @@ function update_progress(){
         function(response) {return response.json();}
     ).then(
         function(data) {
+            console.log(data)
             vid_ind = data["current_video"]
             processing_vid_percents[vid_ind].innerText = data["processing_progress"]
             processing_vid_times[vid_ind].innerText = data["est_time"]

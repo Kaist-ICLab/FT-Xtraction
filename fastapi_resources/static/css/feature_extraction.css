@@ -205,6 +205,16 @@ label.feature_list_label, label.significant_moment_list_label{
     user-select: none;
 }
 
+/*--------------------ORDERING CHOICE--------------------*/
+div.ordering_choice_container{
+    top: 76.8%;
+    left: 54.8%;
+    height: 15%;
+    width: 20%;
+
+    border-radius: 2vh 2vh 2vh 2vh;
+}
+
 /*--------------------SIGNIFICANT MOMENT LIST--------------------*/
 div.container.significant_moments_list_container{
     right: 4%;
@@ -321,7 +331,7 @@ div.stop_processing{
     width: 10%;
     height: 7%;
 
-    color: var(--sub_bg);
+    color: var(--text_color);
     text-align: center;
 }
 
@@ -345,6 +355,6 @@ div.close_progress_overlay{
 
     opacity: 0.5;
 
-    color: var(--sub_bg);
+    color: var(--text_color);
     text-align: center;
 }

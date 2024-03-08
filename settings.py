@@ -26,6 +26,8 @@ video_names = [vid_path.split("/")[-1] for vid_path in video_list]
 img_lists = [[os.path.join(video_data_dir, i, "img", j) for j in os.listdir(os.path.join(video_data_dir, i, "img"))] for
              i in vids]
 img_names = [[".".join(j.split(".")[:-1]) for j in os.listdir(os.path.join(video_data_dir, i, "img"))] for i in vids]
+fixed_face_positions=[]
+fixed_face_ordering = False
 
 
 # helper function to get the face encoding of a person from an image.
@@ -208,7 +210,7 @@ def process_csv(video_name, people_names):
     with open(os.path.join(csv_data_dir,f"{video_name}.csv"), 'r', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
 
-        extracted_feature_names = next(csv_reader)
+        extracted_feature_names = next(csv_reader)[1:]
 
         graph_colors = create_graph_colors(extracted_feature_names, len(people_names))
         
@@ -216,7 +218,7 @@ def process_csv(video_name, people_names):
             create_processing_lists(extracted_feature_names, people_names)
     
         for row in csv_reader:
-            float_row = [float(val) for val in row]
+            float_row = [float(val) for val in row[1:]]
             
             for i in range(len(extracted_feature_names)):
                 for j in range(len(extraction_feature_inds[i])):
@@ -328,7 +330,7 @@ def check_validity():
     with open(os.path.join(csv_data_dir,f"{video_name}.csv"), 'r', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
 
-        header = next(csv_reader)
+        header = next(csv_reader)[1:]
         data = next(csv_reader)
         num_feature_csv = len(data)
 
@@ -356,8 +358,8 @@ def check_validity():
             else:
                 num_feature_true += num_people*len(feature_details_i["sub_name_list"])
     
-    if num_feature_true != num_feature_csv:
-        print(f"Expected {num_feature_true} data points per row in csv, received {num_feature_csv}")
+    if num_feature_true+1 != num_feature_csv:
+        print(f"Expected {num_feature_true+1} data points per row in csv, received {num_feature_csv}")
         exit()
     
     return None

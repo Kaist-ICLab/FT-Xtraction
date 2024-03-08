@@ -45,7 +45,7 @@ async def process_video(video_indices, selected_features, selected_significant_m
 
             tot_frames = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
 
-            header = [settings.derived_features[j]["feature_name"] for j in selected_features]
+            header = ["Elapsed Frames"]+[settings.derived_features[j]["feature_name"] for j in selected_features]
             header_sig_moment = [settings.significant_moment_names[j] for j in selected_significant_moments]
 
             with open(current_csv, 'w', newline='') as csv_file, open(current_sig_csv, 'w', newline='') as sig_csv_file:
@@ -72,6 +72,7 @@ async def process_video(video_indices, selected_features, selected_significant_m
                     if (cur_frame % settings.n_frames) == 0:
                         info = info_table_i.calculate_features(selected_features)
                         info_sig = info_table_i.calculate_sigm(selected_significant_moments, cur_frame)
+                        info = [cur_frame] + list(info)
                         csv_writer.writerow(info)
                         csv_writer_sig.writerow(info_sig)
                         info_table_i.reset()

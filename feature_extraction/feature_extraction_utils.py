@@ -56,12 +56,28 @@ class InfoTable:
         for i in range(len(base_feature_extraction_inds)):
             ind = base_feature_extraction_inds[i]
             face_bbs, unknown_encodings, information = settings.base_feature_functions[ind](img, len(self.people_list))
-            resolved_people = self.resolve_people(unknown_encodings)
-            for j in range(len(resolved_people)):
-                if resolved_people[j] != -1:
-                    self.people_list[j].extracted_features[ind][cur_frame] = information[resolved_people[j]]
+            if settings.fixed_face_ordering:
+                zipped = list(zip(face_bbs, unknown_encodings, information))
+                zipped.sort(key=lambda info: info[0][0])
+                face_bbs, unknown_encodings, information = zip(*zipped)
+
+                min_num = min(len(settings.fixed_face_positions), len(face_bbs))
+
+                for j in range(min_num):
+                    person_ind = settings.fixed_face_positions[j]
+                    self.people_list[person_ind].extracted_features[ind][cur_frame] = information[j]
                     if i == 0:
-                        self.people_list[j].extra_features[0][cur_frame] = face_bbs[resolved_people[j]]
+                        self.people_list[person_ind].extra_features[0][cur_frame] = face_bbs[j]
+
+            else:
+                resolved_people = self.resolve_people(unknown_encodings)
+                for j in range(len(resolved_people)):
+                    if resolved_people[j] != -1:
+                        self.people_list[j].extracted_features[ind][cur_frame] = information[resolved_people[j]]
+                        if i == 0:
+                            self.people_list[j].extra_features[0][cur_frame] = face_bbs[resolved_people[j]]
+
+
         
         return None
 

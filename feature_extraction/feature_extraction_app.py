@@ -11,10 +11,17 @@ extraction_app = FastAPI()
 #--------------------APP SETUP--------------------
 # Setting the URL that handles video processing requests. It collects the requested videos to be processed as well as
 # the features to be extracted; this information is the given to the video processing function.
+def process_ordering_names(order, names):
+    if len(order)==0:
+        return []
+    return [names.index(i) for i in order.split(",")]
+    
 @extraction_app.post("/extraction_info")
 async def handle_extract_request(request: Request):
     data = await request.json()
+    settings.fixed_face_ordering = data["fixed_ordering"]
     video_indices = data["video_indices"]
+    settings.fixed_face_positions = process_ordering_names(data["ordering_names"], settings.img_names[video_indices.index(True)])
     selected_feature_flags = data["selected_features"]
     selected_features = [i for i in range(len(selected_feature_flags)) if selected_feature_flags[i]]
     selected_significant_moments_flags = data["selected_significant_moments"]
